@@ -198,7 +198,7 @@ class Dataset:
         sample_dir.mkdir(parents=True, exist_ok=True)
 
         sample_i = 0
-        for im_file, gt_data in tqdm(gt_dataset.items(), desc=f'Creating Sample files [{n_samples}]'):
+        for im_file, gt_data in tqdm(gt_dataset.items(), desc='Creating Sample files [{}]'.format(n_samples)):
             if sample_i >= n_samples:
                 break
 
@@ -220,9 +220,7 @@ class Dataset:
             if 2 == len(word_bbox.shape):
                 word_bbox = gt_data['wordBB'][:, :, np.newaxis]
             word_pts = word_bbox[:, :, word_i].transpose().reshape((-1, 1, 2)).astype(np.int)
-            word_pts1 = np.array([[420, 21], [512, 23], [511, 41], [420, 39]])
-            word_pts1 = word_pts1.reshape((-1, 1, 2))
-            cv2.polylines(im, word_pts1, True, color=(255, 0, 0), thickness=2)
+            cv2.polylines(im, word_pts, True, color=(255, 0, 0), thickness=2)
             cv2.putText(im, all_words[word_i], tuple(word_pts[0, 0].tolist()), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                         (255, 255, 0), lineType=cv2.LINE_AA)
         # draw the character boxes and char associated with each box
